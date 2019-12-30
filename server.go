@@ -219,7 +219,8 @@ func (s *Server) cleanupOldGames() {
 }
 
 func (s *Server) Start() error {
-	gameIDs, err := dictionary.Load("assets/game-id-words.txt")
+	// gameIDs, err := dictionary.Load("assets/game-id-words.txt")
+	gameIDs, err := dictionary.Load("assets/poop.txt")
 	if err != nil {
 		return err
 	}

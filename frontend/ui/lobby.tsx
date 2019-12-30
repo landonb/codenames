@@ -10,6 +10,10 @@ window.$ = window.jQuery = jquery;
 export const Lobby = ({ defaultGameID }) => {
   const [newGameName, setNewGameName] = React.useState(defaultGameID);
   const [selectedLanguage, setSelectedLanguage] = React.useState('English');
+  //const [selectedLanguage, setSelectedLanguage] = React.useState('BoardGameGeek');
+  //const [selectedLanguage, setSelectedLanguage] = React.useState('CODENAMES');
+  //const [selectedLanguage, setSelectedLanguage] = React.useState('DEEPUNDERCOVER');
+  //const [selectedLanguage, setSelectedLanguage] = React.useState('DUET');
   const [words, setWords] = React.useState(OriginalWords);
 
   function handleNewGame(e) {
