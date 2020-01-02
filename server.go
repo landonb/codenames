@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"path"
 	"sort"
@@ -76,6 +77,8 @@ func (s *Server) handleGameState(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	log.Printf("handleGameState: body.GameID: %s / body.StateID: %s", body.GameID, body.StateID)
+	//log.Printf("handleGameState: body.GameID: %s", body.GameID)
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	g, ok := s.getGame(body.GameID, body.StateID)
@@ -83,6 +86,7 @@ func (s *Server) handleGameState(rw http.ResponseWriter, req *http.Request) {
 		writeGame(rw, g)
 		return
 	}
+	//log.Printf("handleGameState: s.defaultWords: %s", s.defaultWords)
 	g = newGame(body.GameID, randomState(s.defaultWords))
 	s.games[body.GameID] = g
 	writeGame(rw, g)
@@ -202,30 +206,40 @@ func (s *Server) handleStats(rw http.ResponseWriter, req *http.Request) {
 }
 
 func (s *Server) cleanupOldGames() {
+	log.Printf("cleanupOldGames: s.games: %s\n", s.games)
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	for id, g := range s.games {
 		if g.WinningTeam != nil && g.CreatedAt.Add(12*time.Hour).Before(time.Now()) {
 			delete(s.games, id)
 			fmt.Printf("Removed completed game %s\n", id)
+			log.Printf("Removed completed game %s\n", id)
 			continue
 		}
 		if g.CreatedAt.Add(24 * time.Hour).Before(time.Now()) {
 			delete(s.games, id)
 			fmt.Printf("Removed expired game %s\n", id)
+			log.Printf("Removed expired game %s\n", id)
 			continue
 		}
 	}
 }
 
 func (s *Server) Start() error {
-	// gameIDs, err := dictionary.Load("assets/game-id-words.txt")
-	gameIDs, err := dictionary.Load("assets/poop.txt")
+	gameIDs, err := dictionary.Load("assets/game-id-words.txt")
+	//gameIDs, err := dictionary.Load("assets/duet.txt")
+	//gameIDs, err := dictionary.Load("assets/original.txt")
 	if err != nil {
+		log.Printf("Start/1: err: %s", err)
 		return err
 	}
+	//log.Printf("Start: gameIDs: %s", gameIDs)
+	//d, err := dictionary.Load("assets/original.txt")
+	//d, err := dictionary.Load("assets/poop.txt")
+	//d, err := dictionary.Load("assets/duet.txt")
 	d, err := dictionary.Load("assets/original.txt")
 	if err != nil {
+		log.Printf("Start/2: err: %s", err)
 		return err
 	}
 	s.tpl, err = template.New("index").Parse(tpl)
@@ -256,6 +270,7 @@ func (s *Server) Start() error {
 			s.cleanupOldGames()
 		}
 	}()
+//	s.cleanupOldGames()
 
 	fmt.Println("Started server. Available on http://localhost:9091")
 	return s.Server.ListenAndServe()

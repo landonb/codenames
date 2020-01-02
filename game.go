@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 )
@@ -77,7 +78,9 @@ func (gs GameState) ID() string {
 }
 
 func decodeGameState(s string, defaultWords []string) (GameState, bool) {
+	log.Printf("decodeGameState: s: %s", s)
 	data, err := base64.URLEncoding.DecodeString(s)
+	log.Printf("decodeGameState: data: %s", data)
 	if err != nil {
 		return GameState{}, false
 	}

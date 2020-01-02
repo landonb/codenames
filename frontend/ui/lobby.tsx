@@ -14,7 +14,7 @@ export const Lobby = ({ defaultGameID }) => {
   //const [selectedLanguage, setSelectedLanguage] = React.useState('CODENAMES');
   //const [selectedLanguage, setSelectedLanguage] = React.useState('DEEPUNDERCOVER');
   //const [selectedLanguage, setSelectedLanguage] = React.useState('DUET');
-  const [words, setWords] = React.useState(OriginalWords);
+  //const [words, setWords] = React.useState(OriginalWords);
 
   function handleNewGame(e) {
     e.preventDefault();

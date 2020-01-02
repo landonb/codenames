@@ -54,8 +54,10 @@ export class Game extends React.Component {
     }
 
     const body = { game_id: this.props.gameID };
+    //console.log('refresh: body.game_id: ' + body.game_id);
     if (this.state.game && this.state.game.state_id) {
       body.state_id = this.state.game.state_id;
+      console.log('refresh: body.state_id: ' + body.state_id);
     }
     $.post('/game-state', JSON.stringify(body), data => {
       if (this.state.game && data.created_at != this.state.game.created_at) {
@@ -190,7 +192,9 @@ export class Game extends React.Component {
       status = this.state.game.winning_team + ' wins!';
     } else {
       statusClass = this.currentTeam();
-      status = this.currentTeam() + "'s turn";
+      //status = this.currentTeam() + "'s turn";
+      //status = this.currentTeam() + "'s POOOOOOOOOOOOP";
+      status = "Radish Team " + this.currentTeam().toUpperCase() + " Let's GOOOOOO Already!";
     }
 
     let endTurnButton;

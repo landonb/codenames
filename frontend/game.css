@@ -234,7 +234,10 @@
   height: 75vh;
 }
 .full-screen .cell {
-  font-size: 1.5vw;
+  /* font-size: 1.5vw; */
+  font-size: 2em;
+  font-family: Roboto;
+  font-weight: 700;
 }
 .full-screen #status-line {
   font-size: 3vh;
